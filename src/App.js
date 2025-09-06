@@ -9,8 +9,8 @@ function App() {
   const [token, setToken] = useState(null)
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setToken(token)
-  });
+    setToken(token);
+  },[]);
 
   return (
     <Router>
