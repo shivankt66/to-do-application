@@ -32,20 +32,25 @@ Users can **sign up, log in, and manage their tasks** easily from any device.
 
 ## 📂 Project Structure  
 
-todo-auth-app/
-│
-├── backend/            # Express + MongoDB + JWT
-│   ├── models/         # Mongoose schemas
-│   ├── routes/         # Auth & Task routes
-│   ├── server.js       # Entry point
-│
-├── client/             # React frontend
-│   ├── src/
-│   │   ├── components/ # Navbar, Tasks, Login, Signup
-│   │   ├── api.js      # Axios instance
-│   │   └── App.js      # Routes
-│
-└── README.md
+## Project structure
+
+- **todo-auth-app/**
+  - **backend/**
+    - `controllers/` — route logic (optional)
+    - `middleware/` — auth & error handlers
+    - `models/` — Mongoose schemas (`User.js`, `Task.js`)
+    - `routes/` — API routes (`auth.js`, `task.js`)
+    - `config/` — DB connection (`db.js`)
+    - `server.js` — Express entry point
+    - `package.json`, `.env.example`
+  - **client/**
+    - `public/index.html`
+    - `src/`
+      - `components/` — `Navbar`, `Login`, `Signup`, `Tasks`
+      - `api.js` — axios instance (uses `REACT_APP_API_URL`)
+      - `App.js`, `index.js`
+    - `tailwind.config.js`, `package.json`, `.env`
+  - `README.md`
 
 
 ---
@@ -54,23 +59,35 @@ todo-auth-app/
 
 ### Backend  
 cd backend
+
 npm install
+
 npm run dev
+
+---
 
 ## Create a .env file in the backend folder:
 
 MONGO_URI=your_mongo_connection_string
+
 JWT_SECRET=your_secret_key
+
+---
 
 ## Frontend
 cd client
+
 npm install
+
 npm start
 
+---
 
 ## Create a .env file in the client folder:
 
 REACT_APP_API_URL=https://your-backend.onrender.com/api
+
+---
 
 ## 🌍 Deployment
 
@@ -78,9 +95,13 @@ Backend → Render
 
 Frontend → Netlify
 
+---
+
 ## 🤝 About
 
 This project was created by Shivank Tyagi as a practice project to learn authentication and full-stack development.
+
+---
 
 ## It demonstrates how to:
 
@@ -89,6 +110,8 @@ Manage users securely with JWT
 Protect routes in a React app
 
 Store and retrieve user-specific data in MongoDB
+
+---
 
 ## 📬 Contact
 
