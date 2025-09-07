@@ -9,13 +9,7 @@ export default function Tasks() {
 
   useEffect(() => {
     fetchTasks();
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/tasks");
-    } else {
-      navigate("/login");
-    }
-  }, [navigate]);
+  });
 
   const fetchTasks = async () => {
     try {
