@@ -10,17 +10,17 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setToken(token);
-  },[]);
+  },[token]);
 
   return (
     <Router>
     <>
-      {token && <Navbar />} {/* Show navbar only if logged in */}
+      <Navbar />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/tasks" element={token ? <Tasks /> : <Navigate to="/login" />} />
-        <Route path="*" element={<Navigate to={token ? "/tasks" : "/login"} />} />
+        <Route path="*" element={<Tasks/>} />
       </Routes>
     </>
   </Router>

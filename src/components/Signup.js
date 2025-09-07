@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../api";
 
@@ -8,12 +8,6 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/tasks");
-    }
-  }, [navigate]);
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -33,6 +27,10 @@ export default function Signup() {
       alert("Signup failed");
     }
   };
+
+  if(localStorage.getItem("token")){
+    navigate("/tasks");
+  }
   
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">

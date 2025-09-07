@@ -10,7 +10,7 @@ export default function Navbar() {
     if (userData) {
       setUser(JSON.parse(userData));
     }
-  },[]);
+  },[navigate]);
 
 
   const logout = () => {

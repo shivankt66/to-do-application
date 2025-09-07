@@ -5,26 +5,27 @@ import API from "../api";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const navigate = useNavigate();
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token) {
       navigate("/tasks");
     }
-  }, [navigate]);
+  }, [navigate, token]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const res = await API.post("/auth/login", { email, password });
-      console.log("Login response:", res.data);
-  
+
       if (res.data.token) {
         // store token
         localStorage.setItem("token", res.data.token);
+        setToken(res.data.token); // update state too
+
         // store user info
         localStorage.setItem("user", JSON.stringify(res.data.user));
-        navigate("/tasks");
       } else {
         alert("No token received");
       }
@@ -33,7 +34,6 @@ export default function Login() {
       alert("Login failed");
     }
   };
-
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
