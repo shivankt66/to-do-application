@@ -34,28 +34,31 @@ Users can **sign up, log in, and manage their tasks** easily from any device.
 
 - **todo-auth-app/**
   - **backend/**
-    - `controllers/` — route logic (optional)
     - `middleware/` — auth & error handlers
     - `models/` — Mongoose schemas (`User.js`, `Task.js`)
     - `routes/` — API routes (`auth.js`, `task.js`)
     - `config/` — DB connection (`db.js`)
     - `server.js` — Express entry point
-    - `package.json`, `.env.example`
+    - `package.json`
+    - `.env`
   - **client/**
     - `public/index.html`
     - `src/`
       - `components/` — `Navbar`, `Login`, `Signup`, `Tasks`
       - `api.js` — axios instance (uses `REACT_APP_API_URL`)
       - `App.js`, `index.js`
-    - `tailwind.config.js`, `package.json`, `.env`
-  - `README.md`
+    - `tailwind.config.js`
+    -  `package.json`
+    -  `.env`
+    - `README.md`
 
 
 ---
 
 ## ⚡ Setup Instructions  
 
-### Backend  
+## Backend  
+
 cd backend
 
 npm install
