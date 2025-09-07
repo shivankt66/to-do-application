@@ -32,8 +32,6 @@ Users can **sign up, log in, and manage their tasks** easily from any device.
 
 ## 📂 Project Structure  
 
-## Project structure
-
 - **todo-auth-app/**
   - **backend/**
     - `controllers/` — route logic (optional)
@@ -115,8 +113,8 @@ Store and retrieve user-specific data in MongoDB
 
 ## 📬 Contact
 
-🌐 Portfolio: shivanktyagi-portfolio.netlify.app
+🌐 Portfolio: https://shivanktyagi-portfolio.netlify.app
 
 📧 Email: shivankt66@gmail.com
 
-💼 LinkedIn: (add your LinkedIn link here)
+💼 LinkedIn: https://www.linkedin.com/in/shivank-tyagi-916216247/
