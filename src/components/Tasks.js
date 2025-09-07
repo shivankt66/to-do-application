@@ -12,33 +12,66 @@ export default function Tasks() {
     const token = localStorage.getItem("token");
     if (token) {
       navigate("/tasks");
-    }else{
+    } else {
       navigate("/login");
     }
   }, [navigate]);
 
   const fetchTasks = async () => {
-    const res = await API.get("/tasks");
-    setTasks(res.data);
+    try {
+      const res = await API.get("/tasks");
+      setTasks(res.data);
+    } catch (err) {
+      if (err.response.status === 401) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
+      }
+    }
+
   };
 
   const addTask = async (e) => {
     e.preventDefault();
-    if (!title) return;
-    const res = await API.post("/tasks", { title });
-    setTasks([...tasks, res.data]);
-    fetchTasks();
-    setTitle("");
+    try {
+      if (!title) return;
+      const res = await API.post("/tasks", { title });
+      setTasks([...tasks, res.data]);
+      fetchTasks();
+      setTitle("");
+    } catch (err) {
+      if (err.response.status === 401) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
+      }
+    }
   };
 
   const toggleTask = async (id, completed) => {
-    const res = await API.put(`/tasks/${id}`, { completed: !completed });
-    setTasks(tasks.map((t) => (t._id === id ? res.data : t)));
+    try {
+      const res = await API.put(`/tasks/${id}`, { completed: !completed });
+      setTasks(tasks.map((t) => (t._id === id ? res.data : t)));
+    } catch (err) {
+      if (err.response.status === 401) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
+      }
+    }
   };
 
   const deleteTask = async (id) => {
-    await API.delete(`/tasks/${id}`);
-    setTasks(tasks.filter((t) => t._id !== id));
+    try {
+      await API.delete(`/tasks/${id}`);
+      setTasks(tasks.filter((t) => t._id !== id));
+    } catch (err) {
+      if (err.response.status === 401) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
+      }
+    }
   };
 
   return (
@@ -77,9 +110,8 @@ export default function Tasks() {
               >
                 <span
                   onClick={() => toggleTask(t._id, t.completed)}
-                  className={`cursor-pointer break-words ${
-                    t.completed ? "line-through text-gray-400" : "text-gray-800"
-                  }`}
+                  className={`cursor-pointer break-words ${t.completed ? "line-through text-gray-400" : "text-gray-800"
+                    }`}
                 >
                   {t.title}
                 </span>
