@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../api";
 
-export default function Login() {
+export default function Login({ setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState(localStorage.getItem("token"));
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (token) {
-      navigate("/tasks");
-    }
-  }, [navigate, token]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,12 +13,10 @@ export default function Login() {
       const res = await API.post("/auth/login", { email, password });
 
       if (res.data.token) {
-        // store token
         localStorage.setItem("token", res.data.token);
-        setToken(res.data.token); // update state too
-
-        // store user info
+        setToken(res.data.token); // Update App.js state
         localStorage.setItem("user", JSON.stringify(res.data.user));
+        navigate("/tasks"); // Redirect after login
       } else {
         alert("No token received");
       }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api";
 
@@ -7,34 +7,32 @@ export default function Tasks() {
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchTasks();
-  });
-
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     try {
       const res = await API.get("/tasks");
       setTasks(res.data);
     } catch (err) {
-      if (err.response.status === 401) {
+      if (err.response && err.response.status === 401) {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         navigate("/login");
       }
     }
+  }, [navigate]);
 
-  };
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
 
   const addTask = async (e) => {
     e.preventDefault();
     try {
       if (!title) return;
-      const res = await API.post("/tasks", { title });
-      setTasks([...tasks, res.data]);
-      fetchTasks();
+      await API.post("/tasks", { title });
+      fetchTasks(); // This will update the list
       setTitle("");
     } catch (err) {
-      if (err.response.status === 401) {
+      if (err.response && err.response.status === 401) {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         navigate("/login");
@@ -44,10 +42,10 @@ export default function Tasks() {
 
   const toggleTask = async (id, completed) => {
     try {
-      const res = await API.put(`/tasks/${id}`, { completed: !completed });
-      setTasks(tasks.map((t) => (t._id === id ? res.data : t)));
+      await API.put(`/tasks/${id}`, { completed: !completed });
+      fetchTasks();
     } catch (err) {
-      if (err.response.status === 401) {
+      if (err.response && err.response.status === 401) {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         navigate("/login");
@@ -58,9 +56,9 @@ export default function Tasks() {
   const deleteTask = async (id) => {
     try {
       await API.delete(`/tasks/${id}`);
-      setTasks(tasks.filter((t) => t._id !== id));
+      fetchTasks();
     } catch (err) {
-      if (err.response.status === 401) {
+      if (err.response && err.response.status === 401) {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         navigate("/login");
@@ -118,9 +116,9 @@ export default function Tasks() {
               </li>
             ))
           ) : (
-            <p className="text-center text-gray-500 text-sm sm:text-base">
+            <li className="text-center text-gray-500 text-sm sm:text-base">
               No tasks yet. Add one above!
-            </p>
+            </li>
           )}
         </ul>
       </div>
