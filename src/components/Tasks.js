@@ -1,11 +1,28 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api";
+import { io } from "socket.io-client"; // Add this
+
 
 export default function Tasks() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
+
+  // Setup socket connection
+  useEffect(() => {
+    const socket = io(process.env.REACT_APP_SOCKET_URL, {
+      auth: { token: localStorage.getItem("token") }
+    });
+
+    socket.on("taskUpdated", () => {
+      fetchTasks();
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  },);
 
   const fetchTasks = useCallback(async () => {
     try {
@@ -29,8 +46,10 @@ export default function Tasks() {
     try {
       if (!title) return;
       await API.post("/tasks", { title });
-      fetchTasks(); // This will update the list
+      fetchTasks();
       setTitle("");
+      // Optionally, emit event here if backend doesn't do it
+      // socket.emit("taskUpdated");
     } catch (err) {
       if (err.response && err.response.status === 401) {
         localStorage.removeItem("token");
