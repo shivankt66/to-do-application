@@ -22,7 +22,8 @@ export default function Tasks() {
     return () => {
       socket.disconnect();
     };
-  },);
+    // eslint-disable-next-line
+  },[]);
 
   const fetchTasks = useCallback(async () => {
     try {
